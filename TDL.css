@@ -1,4 +1,3 @@
-
 body {
     background-color: #102542;
     color: #F87060;
@@ -11,8 +10,28 @@ body {
     padding: 20px;
     font-family: "Poppins", serif;
     position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(16, 37, 66, 0.6) rgba(255, 255, 255, 0.1);
 }
 
+body::-webkit-scrollbar {
+    width: 6px;
+}
+
+body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: rgba(16, 37, 66, 0.6);
+    border-radius: 3px;
+    transition: background 0.3s ease-in-out;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: rgba(16, 37, 66, 0.8);
+}
 
 h1 {
     font-family: "Poppins", serif;
@@ -27,69 +46,65 @@ h1 {
     max-width: 600px;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(1, 11, 40, 0.8);
+    box-shadow: 0 5px 10px rgba(1, 11, 40, 0.5);
     position: relative;
-    transition: box-shadow 0.3s ease-in-out;
-    overflow-y: auto; 
-    max-height: 400px; 
+    transition: opacity 0.3s ease-in-out;
+    overflow-y: auto;
+    max-height: 400px;
+    will-change: transform;
 }
 
-
 .task_card::-webkit-scrollbar {
-    width: 6px; 
+    width: 6px;
 }
 
 .task_card::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1); 
-    border-radius: 3px; 
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
 }
 
 .task_card::-webkit-scrollbar-thumb {
-    background: rgba(16, 37, 66, 0.6); 
-    border-radius: 3px; 
-    transition: background 0.3s ease-in-out; 
+    background: rgba(16, 37, 66, 0.6);
+    border-radius: 3px;
+    transition: background 0.3s ease-in-out;
 }
 
 .task_card::-webkit-scrollbar-thumb:hover {
-    background: rgba(16, 37, 66, 0.8); 
+    background: rgba(16, 37, 66, 0.8);
 }
 
 
-.task_card {
-    scrollbar-width: thin; 
-    scrollbar-color: rgba(16, 37, 66, 0.6) rgba(255, 255, 255, 0.1); 
+@media (hover: hover) {
+    .task_card:hover {
+        opacity: 0.95;
+    }
+
+    .task:hover {
+        background-color: #ff8c7a;
+    }
+
+    .task-actions button:hover {
+        transform: scale(1.05);
+    }
 }
+
 
 .poppins-regular {
     font-family: "Poppins", serif;
     font-weight: 600;
-    font-style: normal;
 }
 
 .poppins-bold {
     font-family: "Poppins", serif;
     font-weight: 700;
-    font-style: normal;
 }
 
-
-
-@media (max-width: 600px) {
-    .task_card {
-        width: 100%; 
-        padding: 10px; 
-        max-height: 70vh; 
-    }
-}
-
-.task_card:hover {
-    box-shadow: 0 10px 20px rgba(248, 112, 96, 0.8); 
-}
 
 #taskForm {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
+    gap: 10px;
 }
 
 #taskInput {
@@ -113,108 +128,17 @@ h1 {
 }
 
 
-#taskForm button:hover {
-    background-color: #ff8c7a;
-    transform: scale(1.05);
-}
-
-
-
-
-#taskList {
-    list-style-type: none;
-    padding: 0;
-}
-
-
-.task:hover {
-    background-color: #ff8c7a;
-
-}
-
-.task-text {
-    transition: text-decoration 0.3s ease-in-out, opacity 0.3s ease-in-out;
-}
-
-.task.completed .task-text {
-    text-decoration: line-through;
-    opacity: 0.7;
-}
-
-.task-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.task-actions button {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    font-family: "Poppins", serif;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.edit-btn {
-    background-color: #102542;
-    color: #F87060;
-}
-
-.edit-btn:hover {
-    background-color: #1a365a;
-}
-
-.delete-btn {
-    background-color: #ff4d4d;
-    color: #102542;
-}
-
-.delete-btn:hover {
-    background-color: #ff6666;
-}
-
-.complete-btn {
-    background-color: #4CAF50;
-    color: #102542;
-}
-
-.complete-btn:hover {
-    background-color: #66bb6a;
-}
-
-
-
-#taskForm {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 10px;
-}
-
-#taskInput {
-    width: 70%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-family: "Poppins", serif;
-}
-
-#taskForm button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: #F87060;
-    color: #102542;
-    font-family: "Poppins", serif;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+@media (hover: hover) {
+    #taskForm button:hover {
+        background-color: #ff8c7a;
+    }
 }
 
 #taskList {
     list-style-type: none;
     padding: 0;
 }
+
 
 .task {
     background-color: #F87060;
@@ -225,8 +149,15 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
 }
+
+
+.task.completed .task-text {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
 
 .task-actions {
     display: flex;
@@ -240,6 +171,38 @@ h1 {
     font-family: "Poppins", serif;
     font-weight: 500;
     cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+
+.edit-btn {
+    background-color: #102542;
+    color: #F87060;
+}
+
+.delete-btn {
+    background-color: #ff4d4d;
+    color: #102542;
+}
+
+.complete-btn {
+    background-color: #4CAF50;
+    color: #102542;
+}
+
+
+@media (hover: hover) {
+    .edit-btn:hover {
+        background-color: #1a365a;
+    }
+
+    .delete-btn:hover {
+        background-color: #ff6666;
+    }
+
+    .complete-btn:hover {
+        background-color: #66bb6a;
+    }
 }
 
 
