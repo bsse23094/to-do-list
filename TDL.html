@@ -69,7 +69,7 @@ function displayTasks(taskObj){
         const completeButton = document.createElement("button");
         completeButton.classList.add("complete-btn");
         completeButton.textContent = "Complete";
-        completeButton.addEventListener("click" , ()=>completeTask(taskObj , taskTextContent));
+        completeButton.addEventListener("click" , ()=>completeTask(taskObj , taskTextContent , completeButton));
 
 
         taskActions.appendChild(editButton);
@@ -123,17 +123,19 @@ function editTask( taskObj , taskTextContent ){
     }
 }
 
-function completeTask( taskObj , taskTextContent ){
+function completeTask( taskObj , taskTextContent , completeButton ){
 
     const taskElement = taskTextContent.parentElement;
 
     if ( !taskObj.completed) {
         taskObj.completed = true;
         taskElement.classList.add("completed"); 
+        completeButton.textContent = "Undo";
         setDataToLocalStorage();
     } else {
         taskObj.completed = false;
         taskElement.classList.remove("completed");
+        completeButton.textContent = "Complete";
         setDataToLocalStorage();
     }
 }
