@@ -109,7 +109,7 @@ h1 {
     font-family: "Poppins", serif;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+    transition: background-color 0.3s ease-in-out;
 }
 
 
@@ -129,7 +129,7 @@ h1 {
 
 .task:hover {
     background-color: #ff8c7a;
-    transform: scale(1.02);
+
 }
 
 .task-text {
