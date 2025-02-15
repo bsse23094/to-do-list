@@ -1,3 +1,4 @@
+
 body {
     background-color: #102542;
     color: #F87060;
@@ -12,6 +13,53 @@ body {
     position: relative;
 }
 
+
+h1 {
+    font-family: "Poppins", serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+}
+
+.task_card {
+    background-color: #F87060;
+    color: #102542;
+    width: 90%;
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(1, 11, 40, 0.8);
+    position: relative;
+    transition: box-shadow 0.3s ease-in-out;
+    overflow-y: auto; 
+    max-height: 400px; 
+}
+
+
+.task_card::-webkit-scrollbar {
+    width: 6px; 
+}
+
+.task_card::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1); 
+    border-radius: 3px; 
+}
+
+.task_card::-webkit-scrollbar-thumb {
+    background: rgba(16, 37, 66, 0.6); 
+    border-radius: 3px; 
+    transition: background 0.3s ease-in-out; 
+}
+
+.task_card::-webkit-scrollbar-thumb:hover {
+    background: rgba(16, 37, 66, 0.8); 
+}
+
+
+.task_card {
+    scrollbar-width: thin; 
+    scrollbar-color: rgba(16, 37, 66, 0.6) rgba(255, 255, 255, 0.1); 
+}
+
 .poppins-regular {
     font-family: "Poppins", serif;
     font-weight: 600;
@@ -24,16 +72,14 @@ body {
     font-style: normal;
 }
 
-.task_card {
-    background-color: #F87060;
-    color: #102542;
-    width: 90%;
-    max-width: 600px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(1, 11, 40, 0.8);
-    position: relative;
-    transition: box-shadow 0.3s ease-in-out; 
+
+
+@media (max-width: 600px) {
+    .task_card {
+        width: 100%; 
+        padding: 10px; 
+        max-height: 70vh; 
+    }
 }
 
 .task_card:hover {
@@ -74,21 +120,10 @@ body {
 
 
 
+
 #taskList {
     list-style-type: none;
     padding: 0;
-}
-
-.task {
-    background-color: #F87060;
-    color: #102542;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
 }
 
 
@@ -145,4 +180,104 @@ body {
 
 .complete-btn:hover {
     background-color: #66bb6a;
+}
+
+
+
+#taskForm {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+#taskInput {
+    width: 70%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-family: "Poppins", serif;
+}
+
+#taskForm button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #F87060;
+    color: #102542;
+    font-family: "Poppins", serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+#taskList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.task {
+    background-color: #F87060;
+    color: #102542;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.task-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.task-actions button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    font-family: "Poppins", serif;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .task_card {
+        width: 100%;
+        padding: 10px;
+        max-height: 70vh;
+    }
+
+    #taskForm {
+        flex-direction: column;
+    }
+
+    #taskInput {
+        width: 95%;
+        padding: 10px;
+    }
+
+    #taskForm button {
+        width: 100%;
+    }
+
+    .task {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .task-actions {
+        gap: 5px;
+    }
+
+    .task-actions button {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
 }
