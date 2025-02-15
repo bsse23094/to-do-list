@@ -125,7 +125,7 @@ function editTask( taskObj , taskTextContent ){
 
 function completeTask( taskObj , taskTextContent , completeButton ){
 
-    const taskElement = taskTextContent.parentElement;
+    const taskElement = taskTextContent.closest('.task');
 
     if ( !taskObj.completed) {
         taskObj.completed = true;
