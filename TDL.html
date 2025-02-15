@@ -115,7 +115,7 @@ function deleteTask( taskObj , theTask  ){
 }
 
 function editTask( taskObj , taskTextContent ){
-    const editedTask = prompt("Edit the Task" , taskObj);
+    const editedTask = prompt("Edit the Task:" );
     if ( editedTask ) {
         taskObj.task = editedTask;
         taskTextContent.textContent = editedTask;
