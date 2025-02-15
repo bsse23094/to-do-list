@@ -32,9 +32,10 @@ let tasks = [];
 
 document.addEventListener("DOMContentLoaded",()=>{
     const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [] ;
-    tasks = savedTasks;
+    tasks = savedTasks;   
     savedTasks.forEach((task) => {
         displayTasks(task);
+       
     })
 })
 
@@ -48,6 +49,9 @@ function displayTasks(taskObj){
     let theTask = document.createElement("li");
         theTask.classList.add("task");
         
+        if ( taskObj.completed ) {
+        theTask.classList.add("completed");
+    }
 
         const taskActions = document.createElement("div");
         taskActions.classList.add("task-actions");
@@ -69,6 +73,9 @@ function displayTasks(taskObj){
         const completeButton = document.createElement("button");
         completeButton.classList.add("complete-btn");
         completeButton.textContent = "Complete";
+        if ( taskObj.completed ) {
+            completeButton.textContent = "Undo";
+        }
         completeButton.addEventListener("click" , ()=>completeTask(taskObj , taskTextContent , completeButton));
 
 
@@ -131,13 +138,14 @@ function completeTask( taskObj , taskTextContent , completeButton ){
         taskObj.completed = true;
         taskElement.classList.add("completed"); 
         completeButton.textContent = "Undo";
-        setDataToLocalStorage();
+
     } else {
         taskObj.completed = false;
         taskElement.classList.remove("completed");
         completeButton.textContent = "Complete";
-        setDataToLocalStorage();
+        
     }
+    setDataToLocalStorage();
 }
 
 
