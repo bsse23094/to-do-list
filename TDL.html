@@ -6,148 +6,61 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="TDL.css">
     <title>To Do List</title>
 </head>
 <body>
-    <h1 class="poppins-bold">To Do List 📝</h1>
-    
-    <div class="task_card">
-        
-        <form id="taskForm" class="poppins-regular">
-            <input type="text" id="taskInput" placeholder="Add a new task..." required>
-            <button type="submit">Add Task</button>
-        </form>
-        <ul id="taskList" class="poppins-regular"></ul>
+    <div class="container mt-4">
+        <h1 class="poppins-bold text-center">To Do List 📝</h1>
+        <button class="btn my-3 custom-btn" data-bs-toggle="modal" data-bs-target="#taskModal">+ Add Task</button>
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item"><a class="nav-link active" id="active-tab" href="#">Active</a></li>
+            <li class="nav-item"><a class="nav-link" id="pending-tab" href="#">Pending</a></li>
+            <li class="nav-item"><a class="nav-link" id="completed-tab" href="#">Completed</a></li>
+        </ul>
+
+        <div class="task-container mt-3" id="taskContainer"></div>
     </div>
+
+    <div class="modal fade" id="taskModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content custom-modal">
+                <div class="modal-header custom-modal-header">
+                    <h5 class="modal-title custom-modal-title">Add Task</h5>
+                    <button type="button" class="btn-close custom-modal-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body custom-modal-body">
+                    <form id="taskForm" class="d-flex flex-column gap-3">
+                        <div>
+                            <label class="form-label custom-form-label">Task Name</label>
+                            <input type="text" id="taskInput" class="form-control custom-form-input w-100" required>
+                        </div>
+                        <div>
+                            <label class="form-label custom-form-label">Priority (1-3)</label>
+                            <input type="number" id="priorityInput" class="form-control custom-form-input w-100" min="1" max="3" required>
+                        </div>
+                        <div>
+                            <label class="form-label custom-form-label">Start Date & Time</label>
+                            <input type="datetime-local" id="startDateTime" class="form-control custom-form-input w-100" required>
+                        </div>
+                        <div>
+                            <label class="form-label custom-form-label">End Date & Time</label>
+                            <input type="datetime-local" id="endDateTime" class="form-control custom-form-input w-100" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer custom-modal-footer">
+                    <button class="btn btn-secondary custom-modal-cancel" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary custom-modal-add" id="addTaskButton">Add Task</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="TDL.js"></script>
 </body>
-<script>
-
-const taskForm = document.getElementById("taskForm");
-const taskInput = document.getElementById("taskInput");
-const taskList = document.getElementById("taskList");
-
-let tasks = [];
-
-
-document.addEventListener("DOMContentLoaded",()=>{
-    const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [] ;
-    tasks = savedTasks;   
-    savedTasks.forEach((task) => {
-        displayTasks(task);
-       
-    })
-})
-
-function setDataToLocalStorage(){
-    localStorage.setItem("tasks",JSON.stringify(tasks));
-
-}
-
-function displayTasks(taskObj){
-
-    let theTask = document.createElement("li");
-        theTask.classList.add("task");
-        
-        if ( taskObj.completed ) {
-        theTask.classList.add("completed");
-    }
-
-        const taskActions = document.createElement("div");
-        taskActions.classList.add("task-actions");
-
-        let taskTextContent = document.createElement("span");
-        taskTextContent.classList.add("task-text");
-        taskTextContent.textContent = taskObj.task;
-
-        const editButton = document.createElement("button");
-        editButton.classList.add("edit-btn");
-        editButton.textContent = "Edit";
-        editButton.addEventListener("click" , ()=>editTask(taskObj , taskTextContent) );
-
-        const delButton = document.createElement("button");
-        delButton.classList.add("delete-btn");
-        delButton.textContent = "Delete";
-        delButton.addEventListener("click", ()=> deleteTask(taskObj , theTask));
-
-        const completeButton = document.createElement("button");
-        completeButton.classList.add("complete-btn");
-        completeButton.textContent = "Complete";
-        if ( taskObj.completed ) {
-            completeButton.textContent = "Undo";
-        }
-        completeButton.addEventListener("click" , ()=>completeTask(taskObj , taskTextContent , completeButton));
-
-
-        taskActions.appendChild(editButton);
-        taskActions.appendChild(delButton);
-        taskActions.appendChild(completeButton);
-
-        theTask.appendChild(taskTextContent);
-        theTask.appendChild(taskActions);
-        
-        taskList.appendChild(theTask);
-
-        taskInput.value = "";
-        
-
-}
-
-taskForm.addEventListener("submit" , (event)=>{
-    event.preventDefault();
-    const taskText = taskInput.value.trim();
-
-    if (taskText === "" ) {
-        alert("Enter the task!");
-        return;
-    }
-
-    const newTask = {
-        task : taskText,
-        completed : false,
-    };
-
-    tasks.push(newTask);
-    displayTasks(newTask);
-    setDataToLocalStorage();
-
-    taskInput.value = "";
-
-})
-
-function deleteTask( taskObj , theTask  ){
-    tasks = tasks.filter ( task=>task.task != taskObj.task );
-    theTask.remove();
-    setDataToLocalStorage();
-}
-
-function editTask( taskObj , taskTextContent ){
-    const editedTask = prompt("Edit the Task:" );
-    if ( editedTask ) {
-        taskObj.task = editedTask;
-        taskTextContent.textContent = editedTask;
-        setDataToLocalStorage();
-    }
-}
-
-function completeTask( taskObj , taskTextContent , completeButton ){
-
-    const taskElement = taskTextContent.closest('.task');
-
-    if ( !taskObj.completed) {
-        taskObj.completed = true;
-        taskElement.classList.add("completed"); 
-        completeButton.textContent = "Undo";
-
-    } else {
-        taskObj.completed = false;
-        taskElement.classList.remove("completed");
-        completeButton.textContent = "Complete";
-        
-    }
-    setDataToLocalStorage();
-}
-
-
-</script>
 </html>
