@@ -86,15 +86,18 @@ function displayTask ( filter = "active" ) {
 }
 
 window.toggleCompleteTask = function (id){
+
+    let activeTab = document.querySelector(".nav-link.active").id.replace("-tab","");
+
     tasks = tasks.map(task => {
         if (task.id === id) {
-            return { ...task, completed: !tasks.completed };
+            return { ...task, completed: !task.completed };
         } else {
             return task;
         }
     });
     saveTasks();
-    displayTask("active");
+    displayTask(activeTab);
 }
 
 window.deleteTask = function (id){
