@@ -7,6 +7,12 @@ let remainingTime = 0;
 document.addEventListener("DOMContentLoaded", () => {
     loadTasks();
     loadTheme();
+
+    // Refresh task list every minute to handle pending -> active transitions
+    setInterval(() => {
+        const activeTab = document.querySelector(".nav-link.active").id.replace("-tab", "");
+        displayTask(activeTab);
+    }, 60000); // Refresh every minute
 });
 
 const taskContainer = document.getElementById("taskContainer");
@@ -59,11 +65,20 @@ function displayTask(filter = "active") {
     const now = new Date();
 
     let sortedTasks = tasks.filter(task => {
-        return (
-            (filter === "active" && now >= new Date(task.startDate) && now < new Date(task.dueDate) && !task.completed) ||
-            (filter === "pending" && now < new Date(task.startDate)) ||
-            (filter === "completed" && task.completed)
-        );
+        const startDate = new Date(task.startDate);
+        const dueDate = new Date(task.dueDate);
+
+        if (filter === "active") {
+            // Task is active if the current time is between the start and due dates
+            return now >= startDate && now < dueDate && !task.completed;
+        } else if (filter === "pending") {
+            // Task is pending if the start date is in the future
+            return now < startDate;
+        } else if (filter === "completed") {
+            // Task is completed if it's marked as completed
+            return task.completed;
+        }
+        return false;
     });
 
     sortedTasks.sort((a, b) => a.priority - b.priority);
