@@ -31,7 +31,26 @@
             <li class="nav-item"><a class="nav-link" id="completed-tab" href="#">Completed</a></li>
         </ul>
 
-        <div class="task-container mt-3" id="taskContainer"></div>
+       
+        <div class="d-flex flex-column flex-md-row gap-3 mt-3">
+            <div class="task-container flex-grow-1" id="taskContainer"></div>
+            <div class="progress-bar-container" id="progressBarContainer">
+                <div class="progress-bar-display">
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill"></div>
+                    </div>
+                    <div class="timer-text">
+                        <span class="task-name">No Active Timer</span>
+                        <span class="time-remaining">00:00</span>
+                    </div>
+                </div>
+                <div class="timer-controls">
+                    <button class="btn btn-primary" id="startTimer">Start</button>
+                    <button class="btn btn-warning" id="pauseTimer">Pause</button>
+                    <button class="btn btn-danger" id="endTimer">End</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="modal fade" id="taskModal" tabindex="-1">

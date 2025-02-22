@@ -1,3 +1,9 @@
+let activeTimers = {};
+let currentTimerId = null;
+let timerInterval = null;
+let isPaused = false;
+let remainingTime = 0;
+
 document.addEventListener("DOMContentLoaded", () => {
     loadTasks();
     loadTheme();
@@ -75,6 +81,7 @@ function displayTask(filter = "active") {
             <p>End: ${new Date(task.dueDate).toLocaleString()}</p>
             <button class="btn btn-success" onclick="toggleCompleteTask(${task.id})">${buttonText}</button>
             <button class="btn btn-danger" onclick="deleteTask(${task.id})">Delete</button>
+            <button class="btn btn-primary" onclick="startTask(${task.id})">Start Task</button>
         `;
 
         taskContainer.appendChild(taskCard);
@@ -120,6 +127,90 @@ function toggleTheme() {
 
     icon.innerHTML = isLightMode ? `<i class="fas fa-sun"></i>` : `<i class="fas fa-moon"></i>`;
 }
+
+function markTaskComplete(id) {
+    tasks = tasks.map(task => (task.id === id ? { ...task, completed: true } : task));
+    saveTasks();
+    displayTask("active");
+}
+
+window.startTask = function (id) {
+    const minutes = parseInt(prompt("Enter time in minutes for this task:"));
+    if (isNaN(minutes) || minutes <= 0) {
+        alert("Please enter a valid number greater than zero.");
+        return;
+    }
+
+    const task = tasks.find(task => task.id === id);
+    if (!task) return;
+
+    currentTimerId = id;
+    remainingTime = minutes * 60000; // Convert minutes to milliseconds
+
+    // Set the total time for the task
+    task.totalTime = remainingTime;
+
+    updateTimerDisplay(task.name, remainingTime);
+    startTimer();
+};
+
+function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    isPaused = false;
+
+    const startTime = Date.now();
+    const endTime = startTime + remainingTime;
+
+    timerInterval = setInterval(() => {
+        if (!isPaused) {
+            const now = Date.now();
+            remainingTime = Math.max(0, endTime - now);
+
+            if (remainingTime <= 0) {
+                clearInterval(timerInterval);
+                updateTimerDisplay("No Active Timer", 0);
+                markTaskComplete(currentTimerId);
+                currentTimerId = null;
+            } else {
+                updateTimerDisplay(tasks.find(task => task.id === currentTimerId).name, remainingTime);
+            }
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay(taskName, time) {
+    const progressBarFill = document.querySelector(".progress-bar-fill");
+    const taskNameElement = document.querySelector(".timer-text .task-name");
+    const timeRemainingElement = document.querySelector(".timer-text .time-remaining");
+
+    // Update task name and time remaining
+    taskNameElement.textContent = taskName;
+
+    const minutesLeft = Math.floor(time / 60000);
+    const secondsLeft = Math.floor((time % 60000) / 1000);
+    timeRemainingElement.textContent = `${minutesLeft}:${secondsLeft < 10 ? "0" : ""}${secondsLeft}`;
+
+    // Calculate progress percentage
+    const task = tasks.find(task => task.id === currentTimerId);
+    if (!task || !task.totalTime) return; // Avoid division by zero
+
+    const progress = ((task.totalTime - time) / task.totalTime) * 100; // Calculate progress percentage
+    progressBarFill.style.width = `${progress}%`; // Update progress bar width
+}
+
+document.getElementById("startTimer").addEventListener("click", () => {
+    if (currentTimerId) startTimer();
+});
+
+document.getElementById("pauseTimer").addEventListener("click", () => {
+    isPaused = true;
+});
+
+document.getElementById("endTimer").addEventListener("click", () => {
+    clearInterval(timerInterval);
+    updateTimerDisplay("No Active Timer", 0);
+    currentTimerId = null;
+});
 
 function loadTheme() {
     const savedTheme = localStorage.getItem("theme") || "dark";
